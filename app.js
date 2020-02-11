@@ -12,19 +12,11 @@ let counter = document.querySelector(".moves");
 // declaring variable of matchedCards
 let matchedCard = document.getElementsByClassName("match");
 
- // close icon in modal
- let closeicon = document.querySelector(".close");
-
- // declare modal
- let modal = document.getElementById("popup1")
-
  // array for opened cards
 var openedCards = [];
 
 
-// @description shuffles cards
-// @param {array}
-// @returns shuffledarray
+// shuffles cards (Fisher-Yates Shuffle)
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -40,11 +32,11 @@ function shuffle(array) {
 };
 
 
-// @description shuffles cards when page is refreshed / loads
+// shuffles cards when page is refreshed / loads
 document.body.onload = startGame();
 
 
-// @description function to start a new play 
+// function to start a new play 
 function startGame(){
  
     // empty the openCards array
@@ -74,7 +66,7 @@ function startGame(){
 }
 
 
-// @description toggles open and show class to display cards
+// toggles open and show class to display cards
 var displayCard = function (){
     this.classList.toggle("open");
     this.classList.toggle("show");
@@ -82,7 +74,7 @@ var displayCard = function (){
 };
 
 
-// @description add opened cards to OpenedCards list and check if cards are match or not
+// add opened cards to OpenedCards list and check if cards are match or not
 function cardOpen() {
     openedCards.push(this);
     var len = openedCards.length;
@@ -97,7 +89,7 @@ function cardOpen() {
 };
 
 
-// @description when cards match
+// when cards match
 function matched(){
     openedCards[0].classList.add("match", "disabled");
     openedCards[1].classList.add("match", "disabled");
@@ -107,7 +99,7 @@ function matched(){
 }
 
 
-// description when cards don't match
+// when cards don't match
 function unmatched(){
     openedCards[0].classList.add("unmatched");
     openedCards[1].classList.add("unmatched");
@@ -121,7 +113,7 @@ function unmatched(){
 }
 
 
-// @description disable cards temporarily
+// disable cards temporarily
 function disable(){
     Array.prototype.filter.call(cards, function(card){
         card.classList.add('disabled');
@@ -129,7 +121,7 @@ function disable(){
 }
 
 
-// @description enable cards and disable matched cards
+// enable cards and disable matched cards
 function enable(){
     Array.prototype.filter.call(cards, function(card){
         card.classList.remove('disabled');
@@ -140,7 +132,7 @@ function enable(){
 }
 
 
-// @description count player's moves
+// count player's moves
 function moveCounter(){
     moves++;
     counter.innerHTML = moves;
@@ -154,7 +146,7 @@ function moveCounter(){
 }
 
 
-// @description game timer
+// game timer
 var second = 0, minute = 0; hour = 0;
 var timer = document.querySelector(".timer");
 var interval;
@@ -174,38 +166,14 @@ function startTimer(){
 }
 
 
-// @description congratulations when all cards match, show modal and moves, time and rating
-function congratulations(){
+// when finished stop the timer
+function finished(){
     if (matchedCard.length == 16){
         clearInterval(interval);
         finalTime = timer.innerHTML;
-
-        // show congratulations modal
-        modal.classList.add("show");
-        
-        //showing move, time on modal
-        document.getElementById("finalMove").innerHTML = moves;
         document.getElementById("totalTime").innerHTML = finalTime;
 
-        //closeicon on modal
-        closeModal();
     };
-}
-
-
-// // @description close icon on modal
-// function closeModal(){
-//     closeicon.addEventListener("click", function(e){
-//         modal.classList.remove("show");
-//         startGame();
-//     });
-// }
-
-
-// @desciption for user to play Again 
-function playAgain(){
-    modal.classList.remove("show");
-    startGame();
 }
 
 
@@ -214,5 +182,5 @@ for (var i = 0; i < cards.length; i++){
     card = cards[i];
     card.addEventListener("click", displayCard);
     card.addEventListener("click", cardOpen);
-    card.addEventListener("click",congratulations);
+    card.addEventListener("click", finished);
 };
